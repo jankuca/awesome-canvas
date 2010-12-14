@@ -1,3 +1,14 @@
+/**
+ * Awesome Canvas
+ * HTML5 Canvas Editor
+ * --
+ * @author Jan Kuča <jan@jankuca.com>, http://jankuca.com
+ * @company Flow Media, http://flowmedia.cz
+ * --
+ * Released under the Creative Commons Attribution-ShareAlike 3.0 Unported License
+ * http://creativecommons.org/licenses/by-sa/3.0/
+ */
+
 (function() {
 
 var Editor = function(container, params) {
