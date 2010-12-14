@@ -368,8 +368,7 @@ Editor.tools = {
 				});
 				this.area_el.insert(canvas);
 
-				this.selection = undefined;
-				this.selection_layer = {
+				tool.selection_layer = {
 					'canvas': canvas,
 					'context': canvas.getContext('2d')
 				};
@@ -382,7 +381,7 @@ Editor.tools = {
 				});
 				this.area_el.insert(canvas);
 
-				this.selection_content_layer = {
+				tool.selection_content_layer = {
 					'canvas': canvas,
 					'context': canvas.getContext('2d')
 				};	
@@ -391,11 +390,11 @@ Editor.tools = {
 			'mousedown': function(event, context) {
 				var tool = Editor.tools[this.active_tool];
 				if(tool._state == 2) { // selected
-					var temp_canvas = this.selection_content_layer.canvas,
-						temp_context = this.selection_content_layer.context,
+					var temp_canvas = tool.selection_content_layer.canvas,
+						temp_context = tool.selection_content_layer.context,
 						selection = tool._selection;
 					
-					if(this._isPointInSelection(event.x, event.y)) {
+					if(tool._isPointInSelection(event.x, event.y, selection)) {
 						// if the content has not been moved yet
 						if(!tool._moved) {
 							// get the selection content
@@ -407,6 +406,12 @@ Editor.tools = {
 							];
 							// put the data in the temp layer
 							temp_context.putImageData(tool._data, selection[0], selection[1]);
+
+							context.globalCompositeOperation = 'destination-out';
+							context.beginPath();
+							context.rect.apply(context, selection);
+							context.closePath();
+							context.fill();
 						}
 
 						tool._state = 3; // moving
@@ -418,6 +423,7 @@ Editor.tools = {
 						temp_canvas.width = temp_canvas.width;
 						var image = new Image();
 						image.onload = function() {
+							context.globalCompositeOperation = tool.mode;
 							context.drawImage(this, 0, 0);
 						};
 						image.src = data;
@@ -456,8 +462,8 @@ Editor.tools = {
 					tool._selection[0] += delta[0];
 					tool._selection[1] += delta[1];
 
-					var temp_canvas = this.selection_content_layer.canvas,
-						temp_context = this.selection_content_layer.context;
+					var temp_canvas = tool.selection_content_layer.canvas,
+						temp_context = tool.selection_content_layer.context;
 					selection = tool._selection;
 					// empty the temp layer
 					temp_canvas.width = temp_canvas.width;
@@ -468,8 +474,8 @@ Editor.tools = {
 					break;
 				}
 
-				var stroke_canvas = this.selection_layer.canvas,
-					stroke_context = this.selection_layer.context;
+				var stroke_canvas = tool.selection_layer.canvas,
+					stroke_context = tool.selection_layer.context;
 				selection = tool._selection;
 				// empty the stroke layer
 				stroke_canvas.width = stroke_canvas.width;
@@ -493,8 +499,8 @@ Editor.tools = {
 					tool._selection[2] = delta[0];
 					tool._selection[3] = delta[1];
 
-					var stroke_canvas = this.selection_layer.canvas,
-						stroke_context = this.selection_layer.context;
+					var stroke_canvas = tool.selection_layer.canvas,
+						stroke_context = tool.selection_layer.context;
 					selection = tool._selection;
 					// empty the stroke layer
 					stroke_canvas.width = stroke_canvas.width;
@@ -505,8 +511,6 @@ Editor.tools = {
 					stroke_context.stroke();
 
 					tool._state = 2; // selected
-
-					this.selection = tool._selection;
 					break;
 				
 				case 3: // moving
@@ -517,8 +521,8 @@ Editor.tools = {
 					tool._selection[0] += delta[0];
 					tool._selection[1] += delta[1];
 
-					var temp_canvas = this.selection_content_layer.canvas,
-						temp_context = this.selection_content_layer.context;
+					var temp_canvas = tool.selection_content_layer.canvas,
+						temp_context = tool.selection_content_layer.context;
 					selection = tool._selection;
 					// empty the temp layer
 					temp_canvas.width = temp_canvas.width;
@@ -529,6 +533,27 @@ Editor.tools = {
 					tool._moved = true;
 				}
 			}
+		},
+		'_isPointInSelection': function(x, y, selection) {
+			var in_selection = false;
+			if(selection[2] < 0) {
+				selection[0] = selection[0] + selection[2];
+				selection[2] = -selection[2];
+			}
+			if(selection[3] < 0) {
+				selection[1] = selection[1] + selection[3];
+				selection[3] = -selection[3];
+			}
+
+			if (x >= selection[0]-1 &&
+				x <= selection[0] + selection[2] &&
+				y >= selection[1]-1 &&
+				y <= selection[1] + selection[3]
+			) {
+				in_selection = true;
+			}
+
+			return in_selection;
 		}
 	}
 };
@@ -1212,29 +1237,6 @@ Editor.prototype.setActiveToolSize = function(new_value) {
 	}
 
 	tool.size = new_value;
-};
-
-Editor.prototype._isPointInSelection = function(x, y) {
-	var selection = this.selection,
-		in_selection = false;
-	if(selection[2] < 0) {
-		selection[0] = selection[0] + selection[2];
-		selection[2] = -selection[2];
-	}
-	if(selection[3] < 0) {
-		selection[1] = selection[1] + selection[3];
-		selection[3] = -selection[3];
-	}
-
-	if (x >= selection[0]-1 &&
-		x <= selection[0] + selection[2] &&
-		y >= selection[1]-1 &&
-		y <= selection[1] + selection[3]
-	) {
-		in_selection = true;
-	}
-
-	return in_selection;
 };
 
 Editor.prototype.getWacomPlugin = function() {
