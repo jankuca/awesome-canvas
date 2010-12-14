@@ -323,12 +323,6 @@ Editor.tools = {
 					return;
 				}
 
-				var selections = this.selections,
-					ss = selections.length;
-				if(ss > 0 && selections[0][2] > 0 && (!this._isPointInSelection(last.x, last.y) || !this._isPointInSelection(event.x, event.y))) {
-					return;
-				}
-
 				context.lineWidth = this.getActiveToolSize();
 
 				context.beginPath();
@@ -343,12 +337,7 @@ Editor.tools = {
 					return;
 				}
 
-				var last = this.last_mouse_event,
-					selections = this.selections,
-					ss = selections.length;
-				if(ss > 0 && !this._isPointInSelection(last.x, last.y)) {
-					return;
-				}
+				var last = this.last_mouse_event;
 
 				context.beginPath();
 				context.moveTo(last.x, last.y);
