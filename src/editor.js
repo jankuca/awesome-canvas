@@ -44,12 +44,6 @@ Editor.tools = {
 					return;
 				}
 
-//				var selections = this.selections,
-//					ss = selections.length;
-//				if(ss > 0 && !this._isPointInSelection(event.x, event.y)) {
-//					return;
-//				}
-
 				context.fillStyle = 'rgba('+this.active_swatch.join(',')+','+this.getWacomPlugin().pressure+')';
 				context.lineWidth = this.getActiveToolSize();
 				
@@ -66,11 +60,6 @@ Editor.tools = {
 				}
 
 				var last = this.last_mouse_event;
-//					selections = this.selections,
-//					ss = selections.length;
-//				if(ss > 0 && selections[0][2] > 0 && (!this._isPointInSelection(last.x, last.y) || !this._isPointInSelection(event.x, event.y))) {
-//					return;
-//				}
 
 				context.strokeStyle = 'rgba('+this.active_swatch.join(',')+','+this.getWacomPlugin().pressure+')';
 
