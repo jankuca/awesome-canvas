@@ -95,8 +95,7 @@ Editor.tools = {
 					return;
 				}
 
-				var tool = Editor.tools[this.active_tool],
-					temp_context = this.temp_layer.context;
+				var tool = Editor.tools[this.active_tool];
 				tool.in_draw = true;				
 
 				tool.start_event = event;
@@ -129,8 +128,7 @@ Editor.tools = {
 				tool.in_draw = false;
 
 				var	start_event = tool.start_event,
-					temp_canvas = this.temp_layer.canvas,
-					temp_context = this.temp_layer.context;
+					temp_canvas = this.temp_layer.canvas;
 				
 				temp_canvas.width = temp_canvas.width;
 
@@ -157,8 +155,7 @@ Editor.tools = {
 					return;
 				}
 
-				var tool = Editor.tools[this.active_tool],
-					temp_context = this.temp_layer.context;
+				var tool = Editor.tools[this.active_tool];
 				tool.in_draw = true;				
 
 				tool.start_event = event;
@@ -205,7 +202,6 @@ Editor.tools = {
 				var	start_event = tool.start_event,
 					altKey = event.altKey,
 					temp_canvas = this.temp_layer.canvas,
-					temp_context = this.temp_layer.context,
 					delta_y = event.y - start_event.y,
 					delta_x = event.x - start_event.x;
 				
@@ -242,8 +238,7 @@ Editor.tools = {
 					return;
 				}
 
-				var tool = Editor.tools[this.active_tool],
-					temp_context = this.temp_layer.context;
+				var tool = Editor.tools[this.active_tool];
 				tool.in_draw = true;				
 
 				tool.start_event = event;
@@ -290,7 +285,6 @@ Editor.tools = {
 				var	start_event = tool.start_event,
 					altKey = event.altKey,
 					temp_canvas = this.temp_layer.canvas,
-					temp_context = this.temp_layer.context,
 					delta_y = event.y - start_event.y,
 					delta_x = event.x - start_event.x;
 				
@@ -436,8 +430,7 @@ Editor.tools = {
 						var image = new Image();
 						image.onload = function() {
 							context.drawImage(this, 0, 0);
-							delete image;
-						}
+						};
 						image.src = data;
 
 						tool._state = 0;
@@ -450,11 +443,13 @@ Editor.tools = {
 				tool._selection = [event.x + 0.5, event.y + 0.5, 0, 0];
 			},
 			'mousemove': function(event, context) {
-				var tool = Editor.tools[this.active_tool];
+				var tool = Editor.tools[this.active_tool],
+					delta,
+					selection;
 
 				switch(tool._state) {
 				case 1: // selecting
-					var delta = [
+					delta = [
 						event.x - tool._start_event.x,
 						event.y - tool._start_event.y
 					];
@@ -464,7 +459,7 @@ Editor.tools = {
 					break;
 				
 				case 3: // moving
-					var delta = [
+					delta = [
 						event.x - tool._last_event.x,
 						event.y - tool._last_event.y
 					];
@@ -473,8 +468,8 @@ Editor.tools = {
 					tool._selection[1] += delta[1];
 
 					var temp_canvas = this.selection_content_layer.canvas,
-						temp_context = this.selection_content_layer.context,
-						selection = tool._selection;
+						temp_context = this.selection_content_layer.context;
+					selection = tool._selection;
 					// empty the temp layer
 					temp_canvas.width = temp_canvas.width;
 					// put the data in the temp layer
@@ -485,8 +480,8 @@ Editor.tools = {
 				}
 
 				var stroke_canvas = this.selection_layer.canvas,
-					stroke_context = this.selection_layer.context,
-					selection = tool._selection;
+					stroke_context = this.selection_layer.context;
+				selection = tool._selection;
 				// empty the stroke layer
 				stroke_canvas.width = stroke_canvas.width;
 				// stroke the selected area
@@ -496,11 +491,13 @@ Editor.tools = {
 				stroke_context.stroke();
 			},
 			'mouseup': function(event, context) {
-				var tool = Editor.tools[this.active_tool];
+				var tool = Editor.tools[this.active_tool],
+					delta,
+					selection;
 
 				switch(tool._state) {
 				case 1: // selecting
-					var delta = [
+					delta = [
 						event.x - tool._start_event.x,
 						event.y - tool._start_event.y
 					];
@@ -508,8 +505,8 @@ Editor.tools = {
 					tool._selection[3] = delta[1];
 
 					var stroke_canvas = this.selection_layer.canvas,
-						stroke_context = this.selection_layer.context,
-						selection = tool._selection;
+						stroke_context = this.selection_layer.context;
+					selection = tool._selection;
 					// empty the stroke layer
 					stroke_canvas.width = stroke_canvas.width;
 					// stroke the selected area
@@ -524,7 +521,7 @@ Editor.tools = {
 					break;
 				
 				case 3: // moving
-					var delta = [
+					delta = [
 						event.x - tool._last_event.x,
 						event.y - tool._last_event.y
 					];
@@ -532,8 +529,8 @@ Editor.tools = {
 					tool._selection[1] += delta[1];
 
 					var temp_canvas = this.selection_content_layer.canvas,
-						temp_context = this.selection_content_layer.context,
-						selection = tool._selection;
+						temp_context = this.selection_content_layer.context;
+					selection = tool._selection;
 					// empty the temp layer
 					temp_canvas.width = temp_canvas.width;
 					// put the data in the temp layer
@@ -584,6 +581,9 @@ Editor.hex2rgb = function(hex) {
 };
 
 Editor.prototype.build = function() {
+	var i;
+
+	// Init the Wacom plugin
 	var plugin = new Element('embed', {
 		'id': 'wacom-plugin',
 		'type': 'application/x-wacom-tablet',
@@ -743,7 +743,7 @@ Editor.prototype.build = function() {
 	// tool panel items
 	var tools = Editor.tools;
 	this.tools = {};
-	for(var i in tools) {
+	for(i in tools) {
 		if(tools.hasOwnProperty(i)) {
 			var tool_el = new Element('li', {
 				'class': i,
@@ -763,7 +763,7 @@ Editor.prototype.build = function() {
 	// toggle panel items
 	var toggles = Editor.toggles;
 	this.toggles = {};
-	for(var i in toggles) {
+	for(i in toggles) {
 		if(toggles.hasOwnProperty(i)) {
 			var toggle_el = new Element('li', {
 				'class': i,
@@ -975,13 +975,13 @@ Editor.prototype.createBackgroundLayer = function() {
 Editor.prototype.createGridLayer = function() {
 	var w = this.area_el.clientWidth,
 		h = this.area_el.clientHeight;
-		canvas = new Element('canvas', {
-			'width': w,
-			'height': h,
-			'transparent': 'true',
-			'class': 'grid'
-		}),
-		context = canvas.getContext('2d');
+	var canvas = new Element('canvas', {
+		'width': w,
+		'height': h,
+		'transparent': 'true',
+		'class': 'grid'
+	});
+	var context = canvas.getContext('2d');
 	this.area_el.insert({
 		'top': canvas
 	});
@@ -1237,10 +1237,11 @@ Editor.prototype._isPointInSelection = function(x, y) {
 		selection[3] = -selection[3];
 	}
 
-	if(x >= selection[0]-1
-	&& x <= selection[0] + selection[2]
-	&& y >= selection[1]-1
-	&& y <= selection[1] + selection[3]) {
+	if (x >= selection[0]-1 &&
+		x <= selection[0] + selection[2] &&
+		y >= selection[1]-1 &&
+		y <= selection[1] + selection[3]
+	) {
 		in_selection = true;
 	}
 
@@ -1282,8 +1283,8 @@ CanvasRenderingContext2D.prototype.strokeCircle = function(aX, aY, aDiameter) {
 };
 // Ellipse methods
 CanvasRenderingContext2D.prototype.ellipse = function(aX, aY, aWidth, aHeight) {
-    var hB = (aWidth / 2) * .5522848,
-        vB = (aHeight / 2) * .5522848,
+    var hB = (aWidth / 2) * 0.5522848,
+        vB = (aHeight / 2) * 0.5522848,
         eX = aX + aWidth,
         eY = aY + aHeight,
         mX = aX + aWidth / 2,
