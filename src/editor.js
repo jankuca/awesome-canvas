@@ -387,11 +387,35 @@ Editor.tools = {
 				};	
 			},
 
+			'blur': function(context) {
+				var tool = Editor.tools[this.active_tool],
+					temp_canvas = tool.selection_content_layer.canvas,
+					stroke_canvas = tool.selection_layer.canvas;
+
+				if(tool._moved) {
+					var data = temp_canvas.toDataURL();
+					var image = new Image();
+					image.onload = function() {
+						context.globalCompositeOperation = tool.mode;
+						context.drawImage(this, 0, 0);
+					};
+					image.src = data;
+
+					tool._state = 0;
+					tool._moved = false;
+				}
+				temp_canvas.width = temp_canvas.width;
+				stroke_canvas.width = stroke_canvas.width;
+				
+				tool._selection = undefined;
+			},
+
 			'mousedown': function(event, context) {
 				var tool = Editor.tools[this.active_tool];
 				if(tool._state == 2) { // selected
 					var temp_canvas = tool.selection_content_layer.canvas,
 						temp_context = tool.selection_content_layer.context,
+						stroke_canvas = tool.selection_layer.canvas,
 						selection = tool._selection;
 					
 					if(tool._isPointInSelection(event.x, event.y, selection)) {
@@ -421,6 +445,7 @@ Editor.tools = {
 					} else {
 						var data = temp_canvas.toDataURL();
 						temp_canvas.width = temp_canvas.width;
+						stroke_canvas.width = stroke_canvas.width;
 						var image = new Image();
 						image.onload = function() {
 							context.globalCompositeOperation = tool.mode;
@@ -496,6 +521,12 @@ Editor.tools = {
 						event.x - tool._start_event.x,
 						event.y - tool._start_event.y
 					];
+
+					if(delta[0] === 0 || delta[1] === 0) {
+						tool._selection = undefined;
+						return;
+					}
+
 					tool._selection[2] = delta[0];
 					tool._selection[3] = delta[1];
 
@@ -536,6 +567,9 @@ Editor.tools = {
 		},
 		'_isPointInSelection': function(x, y, selection) {
 			var in_selection = false;
+			if(!selection) {
+				return in_selection;
+			}
 			if(selection[2] < 0) {
 				selection[0] = selection[0] + selection[2];
 				selection[2] = -selection[2];
