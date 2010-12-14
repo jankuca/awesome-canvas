@@ -1166,6 +1166,10 @@ Editor.prototype.activateTool = function(name) {
 	var active_tool = this.active_tool;
 	if(active_tool !== undefined) {
 		this.tools[active_tool].item.removeClassName('active');
+
+		if(Editor.tools[active_tool].listeners.blur !== undefined) {
+			Editor.tools[active_tool].listeners.blur.call(this, this.active_layer.context);
+		}
 	}
 
 	this.active_tool = name;
