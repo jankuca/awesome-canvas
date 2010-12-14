@@ -358,7 +358,7 @@ Editor.tools = {
 		'_state': 0,
 
 		'listeners': {
-			'init': function() {
+			'init': function(tool) {
 				var canvas;
 				canvas = new Element('canvas', {
 					'width': this.area_el.clientWidth,
@@ -744,7 +744,7 @@ Editor.prototype.build = function() {
 				item: tool_el
 			};
 			if(tools[i].listeners !== undefined && tools[i].listeners.init !== undefined) {
-				tools[i].listeners.init.call(this);
+				tools[i].listeners.init.call(this, tools[i]);
 			}
 		}
 	}
