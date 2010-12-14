@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="./editor.css" />
+	<script type="text/javascript" src="../../lib/prototype.js"></script>
+	<script type="text/javascript" src="../../src/editor.js"></script>
+	<script type="text/javascript">
+window.onload = function() {
+	new Editor(document.getElementById('editor'));
+};
+	</script>
+	<style type="text/css">
+body {
+	font-family: sans-serif;
+	font-size: 12px;
+}
+#editor {
+	padding: 5px;
+}
+	</style>
+</head>
+<body>
+<div id="editor">Loading&hellip;</div>
+</body>
+</html>

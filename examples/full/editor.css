@@ -1,0 +1,110 @@
+#editor {
+	overflow: hidden;
+	cursor: default;
+}
+#editor .sidebar ul {
+	overflow: hidden;
+	margin: 0 5px 5px 0;
+	padding: 5px 5px 0;
+	width: 40px;
+	border: 1px solid #AAA;
+	border-top: 10px solid #AAA;
+}
+#editor .sidebar li {
+	display: block;
+	height: 40px;
+	overflow: hidden;
+	margin-bottom: 5px;
+	background: #EEE;
+}
+#editor .sidebar li.active {
+	background: #FFA;
+}
+#editor .sidebar .tools li,
+#editor .sidebar .toggles li {
+	text-align: center;
+}
+#editor .area {
+	float: left;
+	width: 640px;
+	height: 480px;
+	margin-right: 5px;
+	border: 1px solid #AAA;
+}
+#editor .area canvas {
+	position: absolute;
+}
+#editor .sidebar {
+	float: left;
+}
+#editor .sidebar .layers {
+	width: 200px;
+	margin-bottom: 0;
+	list-style: none;
+}
+#editor .sidebar .layers li {
+	position: relative;
+	height: 40px;
+	margin-bottom: 5px;
+	padding: 5px 8px;
+	background: #EEE;
+}
+
+#editor .sidebar .layers li.active {
+	background: #FFA;
+}
+#editor .sidebar .toolbar {
+	width: 200px;
+	margin-top: 0;
+	border-top: 0;
+	list-style: none;
+}
+#editor .sidebar .toolbar li {
+	float: right;
+	height: auto;
+	margin-left: 5px;
+	padding: 5px;
+	background: #BBB;
+}
+
+#editor .sidebar .swatches {
+	width: 200px;
+	padding-bottom: 5px;
+	overflow: hidden;
+	list-style: none;
+}
+#editor .sidebar .swatches li {
+	float: left;
+	width: 20px;
+	height: 20px;
+	margin: 0;
+	border: 1px solid #CCC;
+}
+
+#editor .layers .lock {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 20px;
+	background: #DDD;
+}
+#editor .layers .locked .lock {
+	background: #FAA;
+}
+
+#editor .sidebar .tool-options {
+	width: 200px;
+}
+#editor .sidebar .tool-options li {
+	height: auto;
+	background: transparent;
+}
+#editor .sidebar .tool-options label {
+	display: inline-block;
+	width: 40px;
+}
+#editor .sidebar .tool-options input {
+	margin: 0;
+	vertical-align: middle;
+}
