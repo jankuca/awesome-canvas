@@ -110,7 +110,7 @@ Editor.tools = {
 					temp_canvas = this.temp_layer.canvas,
 					temp_context = this.temp_layer.context;
 				
-				temp_canvas.width = temp_canvas.width;
+				temp_canvas.reset();
 				temp_context.strokeStyle = 'rgb('+this.active_swatch.join(',')+')';
 
 				temp_context.beginPath();
@@ -130,7 +130,7 @@ Editor.tools = {
 				var	start_event = tool.start_event,
 					temp_canvas = this.temp_layer.canvas;
 				
-				temp_canvas.width = temp_canvas.width;
+				temp_canvas.reset();
 
 				context.strokeStyle = 'rgb('+this.active_swatch.join(',')+')';
 				context.lineWidth = this.getActiveToolSize();
@@ -179,7 +179,7 @@ Editor.tools = {
 					delta_x = (delta_x > 0) ? Math.abs(delta_y) : -Math.abs(delta_y);
 				}
 				
-				temp_canvas.width = temp_canvas.width;
+				temp_canvas.reset();
 
 				temp_context.strokeStyle = 'rgb('+this.active_swatch.join(',')+')';
 
@@ -212,7 +212,7 @@ Editor.tools = {
 					delta_x = (delta_x > 0) ? Math.abs(delta_y) : -Math.abs(delta_y);
 				}
 
-				temp_canvas.width = temp_canvas.width;
+				temp_canvas.reset();
 
 				context.strokeStyle = 'rgb('+this.active_swatch.join(',')+')';
 				context.lineWidth = size;
@@ -263,7 +263,7 @@ Editor.tools = {
 					delta_x = (delta_x > 0) ? Math.abs(delta_y) : -Math.abs(delta_y);
 				}
 				
-				temp_canvas.width = temp_canvas.width;
+				temp_canvas.reset();
 
 				temp_context.strokeStyle = 'rgb('+this.active_swatch.join(',')+')';
 
@@ -295,7 +295,7 @@ Editor.tools = {
 					delta_x = (delta_x > 0) ? Math.abs(delta_y) : -Math.abs(delta_y);
 				}
 
-				temp_canvas.width = temp_canvas.width;
+				temp_canvas.reset();
 
 				context.strokeStyle = 'rgb('+this.active_swatch.join(',')+')';
 				context.lineWidth = this.getActiveToolSize();
@@ -407,8 +407,8 @@ Editor.tools = {
 					tool._state = 0;
 					tool._moved = false;
 				}
-				temp_canvas.width = temp_canvas.width;
-				stroke_canvas.width = stroke_canvas.width;
+				temp_canvas.reset();
+				stroke_canvas.reset();
 				
 				tool._selection = undefined;
 			},
@@ -447,8 +447,8 @@ Editor.tools = {
 						return;
 					} else {
 						var data = temp_canvas.toDataURL();
-						temp_canvas.width = temp_canvas.width;
-						stroke_canvas.width = stroke_canvas.width;
+						temp_canvas.reset();
+						stroke_canvas.reset();
 						var image = new Image();
 						image.onload = function() {
 							context.globalCompositeOperation = tool.mode;
@@ -494,7 +494,7 @@ Editor.tools = {
 						temp_context = tool.selection_content_layer.context;
 					selection = tool._selection;
 					// empty the temp layer
-					temp_canvas.width = temp_canvas.width;
+					temp_canvas.reset();
 					// put the data in the temp layer
 					temp_context.putImageData(tool._data, selection[0], selection[1]);
 
@@ -506,7 +506,7 @@ Editor.tools = {
 					stroke_context = tool.selection_layer.context;
 				selection = tool._selection;
 				// empty the stroke layer
-				stroke_canvas.width = stroke_canvas.width;
+				stroke_canvas.reset();
 				// stroke the selected area
 				stroke_context.beginPath();
 				stroke_context.rect.apply(stroke_context, selection);
@@ -537,7 +537,7 @@ Editor.tools = {
 						stroke_context = tool.selection_layer.context;
 					selection = tool._selection;
 					// empty the stroke layer
-					stroke_canvas.width = stroke_canvas.width;
+					stroke_canvas.reset();
 					// stroke the selected area
 					stroke_context.beginPath();
 					stroke_context.rect.apply(stroke_context, selection);
@@ -559,7 +559,7 @@ Editor.tools = {
 						temp_context = tool.selection_content_layer.context;
 					selection = tool._selection;
 					// empty the temp layer
-					temp_canvas.width = temp_canvas.width;
+					temp_canvas.reset();
 					// put the data in the temp layer
 					temp_context.putImageData(tool._data, selection[0], selection[1]);
 
