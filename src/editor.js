@@ -145,6 +145,8 @@ Editor.tools = {
 	},
 	'rectangle': {
 		'mode': 'source-over',
+		'lineCap': 'butt',
+		'lineJoin': 'miter',
 		'cursor': 'crosshair',
 		'size': null,
 		'filled': true,
@@ -203,7 +205,8 @@ Editor.tools = {
 					altKey = event.altKey,
 					temp_canvas = this.temp_layer.canvas,
 					delta_y = event.y - start_event.y,
-					delta_x = event.x - start_event.x;
+					delta_x = event.x - start_event.x,
+					size = this.getActiveToolSize();
 				
 				if(event.shiftKey) {
 					delta_x = (delta_x > 0) ? Math.abs(delta_y) : -Math.abs(delta_y);
@@ -212,14 +215,14 @@ Editor.tools = {
 				temp_canvas.width = temp_canvas.width;
 
 				context.strokeStyle = 'rgb('+this.active_swatch.join(',')+')';
-				context.lineWidth = this.getActiveToolSize();
+				context.lineWidth = size;
 
 				context.beginPath();
 				context.rect(
-					!altKey ? start_event.x : start_event.x - delta_x,
-					!altKey ? start_event.y : start_event.y - delta_y,
-					!altKey ? delta_x : 2 * delta_x,
-					!altKey ? delta_y : 2 * delta_y
+					(!altKey ? start_event.x : start_event.x - delta_x) + (delta_x > 0 ? size / 2 : -size / 2),
+					(!altKey ? start_event.y : start_event.y - delta_y) + (delta_y > 0 ? size / 2 : -size / 2),
+					(!altKey ? delta_x : 2 * delta_x) - (delta_x > 0 ? size : -size),
+					(!altKey ? delta_y : 2 * delta_y) - (delta_y > 0 ? size : -size)
 				);
 				context.closePath();
 				context.stroke();
