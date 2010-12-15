@@ -864,6 +864,8 @@ Editor.prototype.build = function() {
 
 Editor.prototype.addListeners = function() {
 	Event.observe(this.area_el, 'mousedown', function(event) {
+		Editor.env.mousedown = true;
+
 		if(this.active_layer.locked || this.active_layer.canvas === undefined) {
 			this.area_el.setStyle({
 				'cursor': 'not-allowed'
@@ -872,7 +874,6 @@ Editor.prototype.addListeners = function() {
 			return false;
 		}
 
-		Editor.env.mousedown = true;
 		Editor.env.in_draw = true;
 
 		var coords = [
@@ -940,7 +941,7 @@ Editor.prototype.addListeners = function() {
 	}.bind(this));
 
 	Event.observe(window, 'mousemove', function(event) {
-		if(!Editor.env.mousedown) {
+		if(!Editor.env.mousedown || this.active_layer.locked) {
 			return;
 		}
 		if(Editor.env.in_draw) {
