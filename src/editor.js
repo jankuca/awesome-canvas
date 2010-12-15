@@ -834,11 +834,23 @@ Editor.prototype.build = function() {
 	// swatch panel items
 	var swatches = ['#FF0000', '#00FF00', '#0000FF', '#000000', '#FFFFFF'];
 	for(var s = 0, ss = swatches.length; s < ss; ++s) {
-		this.swatches_el.insert(new Element('li', {
+		var swatch_el = new Element('li', {
 			'data-color': swatches[s]
-		}).setStyle({
+		});
+		swatch_el.setStyle({
 			'backgroundColor': swatches[s]
-		}));
+		});
+		swatch_el.observe('mousedown', function(event) {
+			event.preventDefault();
+
+			this.swatch_drag = event.target.readAttribute('data-color');
+			var fn_mouseup = function(event) {
+				Event.stopObserving(window, 'mouseup', fn_mouseup);
+				this.swatch_drag = undefined;
+			}.bind(this);
+			Event.observe(window, 'mouseup', fn_mouseup);
+		}.bind(this));
+		this.swatches_el.insert(swatch_el);
 
 		if(s === 0) {
 			this.activateSwatch(swatches[s]);
@@ -1005,6 +1017,30 @@ Editor.prototype.createBackgroundLayer = function() {
 		'item': layer_item_el
 	})
 		.update('background');
+	layer_item_el.observe('mouseover', function(event) {
+		if(!this.swatch_drag) {
+			return;
+		}
+
+		event.target.addClassName('swatch-change');
+	}.bind(this));
+	layer_item_el.observe('mouseup', function(event) {
+		if(!this.swatch_drag) {
+			return;
+		}
+
+		this.area_el.setStyle({
+			'backgroundColor': this.swatch_drag
+		});
+		event.target.removeClassName('swatch-change');
+	}.bind(this));
+	layer_item_el.observe('mouseout', function(event) {
+		if(!this.swatch_drag) {
+			return;
+		}
+
+		event.target.removeClassName('swatch-change');
+	}.bind(this));
 	this.layers_el.insert(layer_item_el);
 
 	var lock_el = new Element('span', {
