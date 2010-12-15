@@ -100,6 +100,9 @@
 #editor .layers .locked .lock {
 	background: #FAA;
 }
+#editor .sidebar .layers .swatch-change {
+	background: #AFA;
+}
 
 #editor .sidebar .tool-options {
 	width: 200px;

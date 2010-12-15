@@ -843,12 +843,49 @@ Editor.prototype.build = function() {
 		swatch_el.observe('mousedown', function(event) {
 			event.preventDefault();
 
-			this.swatch_drag = event.target.readAttribute('data-color');
+			var swatch_el = event.target,
+				color = swatch_el.readAttribute('data-color');
+
+			var start = [event.clientX, event.clientY],
+				offset = [swatch_el.offsetLeft + 16, swatch_el.offsetTop + 24];
+			// temp drag ghost element
+			var temp_swatch_el = new Element('li')
+				.setStyle({
+					'position': 'absolute',
+					'left': offset[0] + 'px',
+					'top': offset[1] + 'px',
+					'backgroundColor': color,
+					'zIndex': 3
+				});
+			this.swatches_el.insert(temp_swatch_el);
+
+			this.swatch_drag = color;
+
 			var fn_mouseup = function(event) {
 				Event.stopObserving(window, 'mouseup', fn_mouseup);
+				Event.stopObserving(window, 'mousemove', fn_mousemove);
+
+				temp_swatch_el.remove();
 				this.swatch_drag = undefined;
 			}.bind(this);
 			Event.observe(window, 'mouseup', fn_mouseup);
+
+			var fn_mousemove = function(event) {
+				if(!this.swatch_drag) {
+					return;
+				}
+
+				var delta = [
+					event.clientX - start[0],
+					event.clientY - start[1]
+				];
+
+				temp_swatch_el.setStyle({
+					'left': offset[0] + delta[0] + 'px',
+					'top': offset[1] + delta[1] + 'px'
+				});
+			}.bind(this);
+			Event.observe(window, 'mousemove', fn_mousemove);
 		}.bind(this));
 		this.swatches_el.insert(swatch_el);
 
@@ -1019,31 +1056,43 @@ Editor.prototype.createBackgroundLayer = function() {
 	})
 		.update('background');
 	layer_item_el.observe('mouseover', function(event) {
-		if(!this.swatch_drag) {
+		if(!this.swatch_drag || this.background_layer.locked) {
 			return;
 		}
 
-		event.target.addClassName('swatch-change');
+		if(event.target.tagName.toUpperCase() == 'LI') {
+			event.target.addClassName('swatch-change');
+		} else if(event.target.parentNode.tagName.toUpperCase() == 'LI') {
+			event.target.parentNode.addClassName('swatch-change');
+		}
 	}.bind(this));
 	layer_item_el.observe('mouseup', function(event) {
-		if(!this.swatch_drag) {
+		if(!this.swatch_drag || this.background_layer.locked) {
 			return;
 		}
 
 		this.area_el.setStyle({
 			'backgroundColor': this.swatch_drag
 		});
-		event.target.select('.swatch').first().setStyle({
+		var target = event.target;
+		if(target.tagName.toUpperCase() != 'LI') {
+			target = target.parentNode;
+		}
+		target.select('.swatch').first().setStyle({
 			'backgroundColor': this.swatch_drag
 		});
-		event.target.removeClassName('swatch-change');
+		target.removeClassName('swatch-change');
 	}.bind(this));
 	layer_item_el.observe('mouseout', function(event) {
-		if(!this.swatch_drag) {
+		if(!this.swatch_drag || this.background_layer.locked) {
 			return;
 		}
 
-		event.target.removeClassName('swatch-change');
+		var target = event.target;
+		if(target.tagName.toUpperCase() != 'LI') {
+			target = target.parentNode;
+		}
+		target.removeClassName('swatch-change');
 	}.bind(this));
 
 	var swatch_el = new Element('span', {
@@ -1067,6 +1116,7 @@ Editor.prototype.createBackgroundLayer = function() {
 		'backgroundColor': this.params.backgroundColor,
 		'item': layer_item_el
 	};
+	this.background_layer = layer;
 	var num = this.layers.push(layer);
 	layer_item_el.writeAttribute('data-index', num-1);
 };
