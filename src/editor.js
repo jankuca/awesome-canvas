@@ -1032,6 +1032,9 @@ Editor.prototype.createBackgroundLayer = function() {
 		this.area_el.setStyle({
 			'backgroundColor': this.swatch_drag
 		});
+		event.target.select('.swatch').first().setStyle({
+			'backgroundColor': this.swatch_drag
+		});
 		event.target.removeClassName('swatch-change');
 	}.bind(this));
 	layer_item_el.observe('mouseout', function(event) {
@@ -1041,6 +1044,17 @@ Editor.prototype.createBackgroundLayer = function() {
 
 		event.target.removeClassName('swatch-change');
 	}.bind(this));
+
+	var swatch_el = new Element('span', {
+		'class': 'swatch'
+	});
+	swatch_el.setStyle({
+		'backgroundColor': this.params.backgroundColor
+	});
+	layer_item_el.insert({
+		'top': swatch_el
+	});
+
 	this.layers_el.insert(layer_item_el);
 
 	var lock_el = new Element('span', {

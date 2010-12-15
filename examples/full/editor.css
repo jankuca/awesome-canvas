@@ -45,6 +45,7 @@
 #editor .sidebar .layers li {
 	position: relative;
 	height: 40px;
+	line-height: 40px;
 	margin-bottom: 5px;
 	padding: 5px 8px;
 	background: #EEE;
@@ -52,6 +53,13 @@
 
 #editor .sidebar .layers li.active {
 	background: #FFA;
+}
+#editor .sidebar .layers li .swatch {
+	float: left;
+	width: 30px;
+	height: 30px;
+	margin: 4px 8px 4px 1px;
+	border: 1px solid #CCC;
 }
 #editor .sidebar .toolbar {
 	width: 200px;
