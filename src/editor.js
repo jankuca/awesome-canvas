@@ -311,8 +311,8 @@ Editor.tools = {
 	},
 	'eraser': {
 		'mode': 'destination-out',
-		'cursor': 'default',
-		'size': 10,
+		'cursor': 'crosshair',
+		'size': 20,
 		'grid': false,
 
 		'listeners': {
