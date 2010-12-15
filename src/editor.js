@@ -1391,6 +1391,12 @@ window.Editor = Editor;
 })();
 
 
+// We are going to extend the canvas prototype to add simplier content reset
+HTMLCanvasElement.prototype.reset = function() {
+	this.width = this.width;
+};
+
+
 // We need to extend the canvas context prototype to add support for circular shapes
 // ---
 // Source: http://webreflection.blogspot.com/2009/01/ellipse-and-circle-for-canvas-2d.html
