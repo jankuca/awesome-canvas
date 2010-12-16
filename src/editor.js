@@ -899,7 +899,7 @@ Editor.prototype.build = function() {
 
 
 	// cursor
-	this.createCursor();
+	//var 
 };
 
 Editor.prototype.addListeners = function() {
@@ -981,21 +981,19 @@ Editor.prototype.addListeners = function() {
 	}.bind(this));
 
 	Event.observe(window, 'mousemove', function(event) {
+		if(!Editor.env.mousedown || this.active_layer.locked) {
+			return;
+		}
+		if(Editor.env.in_draw) {
+			event.preventDefault();
+		}
+
 		var coords = [
 			event.pageX - this.area_el.offsetLeft,
 			event.pageY - this.area_el.offsetTop
 		];	
 		if(Editor.env.grid && Editor.tools[this.active_tool].grid !== false) {
 			coords = this.applyGridToCoords(coords);
-		}
-
-		this.updateCursorPosition(coords[0], coords[1]);
-
-		if(!Editor.env.mousedown || this.active_layer.locked) {
-			return;
-		}
-		if(Editor.env.in_draw) {
-			event.preventDefault();
 		}
 
 		var data = {
@@ -1336,12 +1334,10 @@ Editor.prototype.activateTool = function(name) {
 		size = Editor.tools[this.params.defaultTool].size;
 	} else if(size === false) {
 		this.controls.size.disable();
-		this.updateCursorSize(false);
 		return;
 	}
 	this.controls.size.enable();
 	this.controls.size.setValue(size);
-	this.updateCursorSize(size);
 };
 
 Editor.prototype.activateSwatch = function(color) {
@@ -1383,52 +1379,6 @@ Editor.prototype.setActiveToolSize = function(new_value) {
 	}
 
 	tool.size = new_value;
-	this.updateCursorSize(new_value);
-};
-
-Editor.prototype.createCursor = function() {
-	var canvas = new Element('canvas', {
-		'width': this.area_el.clientWidth,
-		'height': this.area_el.clientHeight,
-		'transparent': 'true',
-		'class': 'cursor'
-	});
-	this.area_el.insert(canvas);
-
-	this.cursor_layer = {
-		'canvas': canvas,
-		'context': canvas.getContext('2d'),
-		'size': 0
-	};
-};
-Editor.prototype.updateCursorSize = function(size) {
-	var layer = this.cursor_layer,
-		canvas = layer.canvas;
-
-	if(!size) {
-		layer.size = 0;
-		canvas.reset();
-		return;
-	}
-
-	layer.size = size;
-};
-Editor.prototype.updateCursorPosition = function(x, y) {
-	var layer = this.cursor_layer,
-		canvas = layer.canvas,
-		context = layer.context;
-	console.log(layer.size);
-	if(!layer.size) {
-		return;
-	}
-
-	canvas.reset();
-	context.strokeStyle = '#888888';
-	context.lineWidth = 1;
-	context.beginPath();
-	context.arc(x, y, layer.size / 2, 0, Math.PI*2, false);
-	context.closePath();
-	context.stroke();
 };
 
 Editor.prototype.getWacomPlugin = function() {
