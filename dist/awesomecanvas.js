@@ -722,7 +722,7 @@
   window.AwesomeCanvas = Editor;
   hex2rgb = function(hex) {
     hex = hex.charAt(0) === '#' ? hex.substring(1, 7) : hex;
-    return [parseInt(hex.substring(0, 2), 16, parseInt(hex.substring(2, 4), 16, parseInt(hex.substring(4, 6), 16)))];
+    return [parseInt(hex.substring(0, 2), 16), parseInt(hex.substring(2, 4), 16), parseInt(hex.substring(4, 6), 16)];
   };
   HTMLCanvasElement.prototype.reset = function() {
     return this.width = this.width;

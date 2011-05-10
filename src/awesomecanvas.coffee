@@ -399,8 +399,8 @@ Editor = Function.inherit (container, params) ->
 	
 	processEvent: (e) ->
 		coords = [
-			e.pageX - @area.offsetLeft,
-			e.pageY - @area.offsetTop,
+			e.pageX - @area.offsetLeft
+			e.pageY - @area.offsetTop
 		]
 		tool = @constructor.tools[@active_tool]
 		if @grid and tool.grid isnt off
@@ -595,11 +595,11 @@ Editor::wacom_defaults =
 	pressure: 1
 
 Editor::swatches = [
-	'#000000',
-	'#FFFFFF',
-	'#FF0000',
-	'#00FF00',
-	'#0000FF',
+	'#000000'
+	'#FFFFFF'
+	'#FF0000'
+	'#00FF00'
+	'#0000FF'
 ]
 
 Editor.env =
@@ -613,9 +613,9 @@ window.AwesomeCanvas = Editor
 hex2rgb = (hex) ->
 	hex = if hex.charAt(0) is '#' then hex.substring 1, 7 else hex
 	return [
-		parseInt hex.substring(0, 2), 16,
-		parseInt hex.substring(2, 4), 16,
-		parseInt hex.substring(4, 6), 16,
+		parseInt(hex.substring(0, 2), 16)
+		parseInt(hex.substring(2, 4), 16)
+		parseInt(hex.substring(4, 6), 16)
 	]
 
 
