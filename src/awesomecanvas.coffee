@@ -399,8 +399,8 @@ Editor = Function.inherit (container, params) ->
 	
 	processEvent: (e) ->
 		coords = [
-			e.pageX - @area.offsetLeft
-			e.pageY - @area.offsetTop
+			e.offsetX
+			e.offsetY
 		]
 		tool = @constructor.tools[@active_tool]
 		if @grid and tool.grid isnt off
