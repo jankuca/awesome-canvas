@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--
+ ! Awesome Canvas
+ ! HTML5 Canvas Editor
+ ! --
+ ! @author Jan Kuča <jan@jankuca.com>, http://jankuca.com
+ ! @company Flow Media, http://flowmedia.cz
+ ! --
+ ! Released under the Creative Commons Attribution-ShareAlike 3.0 Unported License
+ ! http://creativecommons.org/licenses/by-sa/3.0/
+-->
+	<meta charset="UTF-8" />
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="./editor.css" />
+	<script type="text/javascript" src="../../lib/utils/utils.js"></script>
+	<script type="text/javascript" src="../../dist/awesomecanvas.js"></script>
+	<script type="text/javascript">
+window.onload = function() {
+	var editor = new AwesomeCanvas(document.getElementById('editor'));
+};
+	</script>
+	<style type="text/css">
+body {
+	font-family: sans-serif;
+	font-size: 12px;
+}
+#editor {
+	padding: 5px;
+}
+	</style>
+</head>
+<body>
+<div id="editor">Loading&hellip;</div>
+</body>
+</html>
