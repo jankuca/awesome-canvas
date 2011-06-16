@@ -537,7 +537,7 @@ Editor = Function.inherit (container, params) ->
 	_initWacomPlugin: ->
 		@_wacom_plugin = plugin = document.getElementById 'wacom-plugin'
 		if not plugin
-			plugin = new Element 'embed',
+			@_wacom_plugin = plugin = new Element 'embed',
 				id: 'wacom-plugin'
 				type: 'application/x-wacom-tablet'
 				hidden: yes
@@ -558,7 +558,7 @@ Editor.tools.brush =
 		mousedown: (e, ctx) ->
 			return if e.button isnt 0
 
-			ctx.fillStyle = "rgba(#{@active_swatch.join(',')},#{@getWacomPlugin.pressure})" 
+			ctx.fillStyle = "rgba(#{@active_swatch.join(',')},#{@getWacomPlugin().pressure})" 
 			ctx.lineWidth = do @getActiveToolSize
 
 			do ctx.beginPath
@@ -570,7 +570,7 @@ Editor.tools.brush =
 		mousemove: (e, ctx) ->
 			return if not Editor.env.mousedown or e.button isnt 0
 
-			ctx.strokeStyle = "rgba(#{@active_swatch.join(',')},#{@getWacomPlugin.pressure})"
+			ctx.strokeStyle = "rgba(#{@active_swatch.join(',')},#{@getWacomPlugin().pressure})"
 
 			last = @_e
 			do ctx.beginPath
