@@ -223,6 +223,9 @@ awesomeCanvas.Editor.prototype.buildLayerPanel_ = function () {
   goog.dom.appendChild(this.layer_panel, list);
   goog.events.listen(list, goog.events.EventType.CLICK, function (e) {
     var target = e.target;
+    if (target.nodeType === 3) {
+      target = target.parentNode;
+    }
     switch (target.tagName) {
       case 'LI':
         this.activateLayer(goog.dom.dataset.get(target, 'index'));
@@ -236,6 +239,8 @@ awesomeCanvas.Editor.prototype.buildLayerPanel_ = function () {
           } else {
             this.lockLayer(index);
           }
+        } else if (goog.dom.classes.has(target, 'title')) {
+          this.activateLayer(goog.dom.dataset.get(target.parentNode, 'index'));
         }
         break;
     }
