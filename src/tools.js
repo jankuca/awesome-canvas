@@ -6,6 +6,7 @@ goog.provide('awesomeCanvas.Tools');
 awesomeCanvas.Tools = {};
 
 awesomeCanvas.Tools['brush'] = {
+  'title': 'Brush',
   mode: 'source-over',
   cursor: 'crosshair',
   size: 2,
@@ -39,6 +40,7 @@ awesomeCanvas.Tools['brush'] = {
 };
 
 awesomeCanvas.Tools['line'] = {
+  'title': 'Line',
   mode: 'source-over',
   cursor: 'crosshair',
   size: null,
@@ -99,6 +101,7 @@ awesomeCanvas.Tools['line'] = {
 };
 
 awesomeCanvas.Tools['rectangle'] = {
+  'title': 'Rectangle',
   mode: 'source-over',
   lineCap: 'butt',
   lineJoin: 'miter',
@@ -186,6 +189,7 @@ awesomeCanvas.Tools['rectangle'] = {
 };
 
 awesomeCanvas.Tools['ellipse'] = {
+  'title': 'Ellipse',
   mode: 'source-over',
   cursor: 'crosshair',
   size: null,
@@ -270,6 +274,7 @@ awesomeCanvas.Tools['ellipse'] = {
 };
 
 awesomeCanvas.Tools['eraser'] = {
+  'title': 'Eraser',
   mode: 'destination-out',
   cursor: 'crosshair',
   size: 20,
@@ -310,6 +315,7 @@ awesomeCanvas.Tools['eraser'] = {
   }
 };
 awesomeCanvas.Tools['marquee'] = {
+  'title': 'Selection',
   mode: 'source-over',
   cursor: 'crosshair',
   size: false,
