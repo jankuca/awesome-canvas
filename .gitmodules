@@ -1,3 +1,3 @@
 [submodule "lib/utils"]
 	path = lib/utils
-	url = git://gist.github.com/871775.git
+	url = git@gist.github.com:871775.git
